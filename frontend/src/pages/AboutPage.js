@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { sharedStyles } from "./Pagestyles.js";
+import { sharedStyles } from "./PageStyles.js";
 
 const aboutExtra = `
   .ab-headline {

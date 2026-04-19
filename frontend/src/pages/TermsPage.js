@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { sharedStyles } from "./Pagestyles.js";
+import { sharedStyles } from "./PageStyles.js";
 
 const sections = [
   { id: "s1",  label: "Service Description" },
