@@ -71,13 +71,12 @@ const handleCheckout = async (planType) => {
               </span>
             </div>
             <h1 className="text-6xl lg:text-7xl font-bold tracking-tight mb-6" data-testid="hero-title">
-              Support SevenX Media and
+              Maximize your ad revenue withn
               <br />
-              browse without distractions
+              intelligent network selection.
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mb-12 leading-relaxed" data-testid="hero-subtitle">
-              Upgrade your account to remove third-party ads, unlock faster browsing speeds,
-              and support our independent media platform dedicated to quality content.
+SevenX Media is an ad optimization SaaS for web publishers with international audiences. Our proprietary script uses probabilistic models and data analysis to determine the best-performing ad network for each visitor based on geolocation and other contextual signals, maximizing publisher revenue per impression.
             </p>
             <Button
               size="lg"
@@ -535,6 +534,9 @@ const handleCheckout = async (planType) => {
             </Link>
             <Link to="/refund" className="text-sm text-muted-foreground hover:text-primary transition-colors" data-testid="footer-refund-link">
               Refund Policy
+            </Link>
+              <Link to="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors" data-testid="footer-refund-link">
+              About
             </Link>
           </div>
         </div>

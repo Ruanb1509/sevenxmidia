@@ -13,6 +13,7 @@ import RefundPage from "../src/pages/RefundPage";
 import SuccessPage from "../src/pages/SuccessPage";
 import CancelPage from "../src/pages/CancelPage";
 import "../src/App.css";
+import AboutPage from "./pages/AboutPage";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/terms" element={<TermsPage />} />
+            <Route path="/about" element={<AboutPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/refund" element={<RefundPage />} />
             <Route path="/success" element={<SuccessPage />} />

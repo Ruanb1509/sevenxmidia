@@ -1,112 +1,203 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
-import { Button } from "../components/ui/button";
+import { sharedStyles } from "./Pagestyles.js";
+
+const sections = [
+  { id: "s1",  label: "Service Description" },
+  { id: "s2",  label: "Acceptance of Terms" },
+  { id: "s3",  label: "Eligibility" },
+  { id: "s4",  label: "Account Responsibilities" },
+  { id: "s5",  label: "Subscription & Billing" },
+  { id: "s6",  label: "Acceptable Use" },
+  { id: "s7",  label: "Intellectual Property" },
+  { id: "s8",  label: "Service Availability" },
+  { id: "s9",  label: "Limitation of Liability" },
+  { id: "s10", label: "Cancellation" },
+  { id: "s11", label: "Termination by Us" },
+  { id: "s12", label: "Lifetime Plan" },
+  { id: "s13", label: "Indemnification" },
+  { id: "s14", label: "Changes to Terms" },
+  { id: "s15", label: "Governing Law" },
+  { id: "s16", label: "Contact" },
+];
 
 const TermsPage = () => {
+  const [activeId, setActiveId] = useState("s1");
+  const [progress, setProgress] = useState(0);
+  const refs = useRef({});
+
+  useEffect(() => {
+    const onScroll = () => {
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(total > 0 ? (window.scrollY / total) * 100 : 0);
+      let cur = "s1";
+      for (const s of sections) {
+        if (refs.current[s.id]?.getBoundingClientRect().top <= 90) cur = s.id;
+      }
+      setActiveId(cur);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const scrollTo = (id) =>
+    refs.current[id]?.scrollIntoView({ behavior: "smooth", block: "start" });
+
   return (
-    <div className="min-h-screen bg-background" data-testid="terms-page">
-      <div className="container mx-auto max-w-4xl px-6 py-16">
-        <Link to="/">
-          <Button variant="ghost" className="mb-8" data-testid="back-button">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Home
-          </Button>
-        </Link>
+    <>
+      <style>{sharedStyles}</style>
+      <div className="sx-root" data-testid="terms-page">
+        <div className="sx-progress" style={{ width: `${progress}%` }} />
 
-        <h1 className="text-5xl font-bold mb-8" data-testid="terms-title">Terms of Service</h1>
+        <div className="sx-layout">
+          {/* ── SIDEBAR ── */}
+          <aside className="sx-sidebar">
+            <Link to="/" className="sx-back" data-testid="back-button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M19 12H5M12 5l-7 7 7 7"/>
+              </svg>
+              Back to Home
+            </Link>
+            <p className="sx-sidebar-label">Contents</p>
+            {sections.map((s) => (
+              <button
+                key={s.id}
+                className={`sx-nav-item ${activeId === s.id ? "active" : ""}`}
+                onClick={() => scrollTo(s.id)}
+              >
+                {s.label}
+              </button>
+            ))}
+          </aside>
 
-        <div className="prose prose-neutral dark:prose-invert max-w-none">
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4">Company Information</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              This service is operated by SevenX Media. By using our services, you agree to be bound by these Terms of Service.
-            </p>
-          </section>
+          {/* ── MAIN ── */}
+          <main>
+            <span className="sx-tag">Legal Document</span>
+            <h1 className="sx-page-title" data-testid="terms-title">Terms of Service</h1>
+            <p className="sx-date">Last updated: April 16, 2026</p>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4">Service Scope</h2>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              SevenX Media provides premium advertising and content services. Our platform offers enhanced browsing experiences
-              through premium subscriptions that remove advertisements and provide additional features.
-            </p>
-          </section>
+            <section id="s1" ref={(el) => (refs.current.s1 = el)} className="sx-section">
+              <span className="sx-section-num">01</span>
+              <h2 className="sx-h2">Service Description</h2>
+              <p className="sx-p">
+                SevenX Media ("we", "our", "us") operates sevenxmedia.io, a SaaS platform that provides ad optimization technology for web publishers.
+                Our proprietary script uses probabilistic models and data analysis to determine the best-performing ad network for each website visitor
+                based on geolocation and other contextual signals, maximizing publisher revenue per impression.
+              </p>
+              <p className="sx-p">The Service includes: access to the optimization script, analytics dashboard, A/B testing tools, and related features.</p>
+            </section>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4">Eligibility</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              You must be at least 18 years old to use our paid services. By subscribing, you confirm that you meet this
-              age requirement and have the authority to enter into this agreement.
-            </p>
-          </section>
+            <section id="s2" ref={(el) => (refs.current.s2 = el)} className="sx-section">
+              <span className="sx-section-num">02</span>
+              <h2 className="sx-h2">Acceptance of Terms</h2>
+              <p className="sx-p">By creating an account or using the platform, you agree to these Terms. If you do not agree, do not use the Service.</p>
+            </section>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4">Use of Services</h2>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              Users are expected to use our services responsibly and legally. The following activities are strictly prohibited:
-            </p>
-            <ul className="list-disc pl-6 text-muted-foreground space-y-2">
-              <li>Any form of illegal content or activities</li>
-              <li>Harassment, abuse, or harm to others</li>
-              <li>Unauthorized access or hacking attempts</li>
-              <li>Distribution of malware or viruses</li>
-              <li>Violation of intellectual property rights</li>
-            </ul>
-          </section>
+            <section id="s3" ref={(el) => (refs.current.s3 = el)} className="sx-section">
+              <span className="sx-section-num">03</span>
+              <h2 className="sx-h2">Eligibility</h2>
+              <p className="sx-p">You must be at least 18 years old and legally able to enter into this agreement.</p>
+            </section>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4">Paid Services and Account Upgrades</h2>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              Premium subscriptions provide an enhanced operational account upgrade. Benefits such as ad removal, faster loading
-              times, and exclusive badges are complementary features provided alongside this operational improvement.
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              All payments are processed securely through Stripe. By subscribing, you authorize recurring charges (for monthly/yearly plans)
-              or a one-time charge (for lifetime plans) according to the selected plan.
-            </p>
-          </section>
+            <section id="s4" ref={(el) => (refs.current.s4 = el)} className="sx-section">
+              <span className="sx-section-num">04</span>
+              <h2 className="sx-h2">Account Responsibilities</h2>
+              <p className="sx-p">You are responsible for your account credentials and all activity under your account. Unauthorized sharing or resale is prohibited.</p>
+            </section>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4">Artificial Traffic</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              The use of bots, automated systems, or any artificial means to generate traffic or engagement is strictly prohibited
-              and may result in immediate account termination without refund.
-            </p>
-          </section>
+            <section id="s5" ref={(el) => (refs.current.s5 = el)} className="sx-section">
+              <span className="sx-section-num">05</span>
+              <h2 className="sx-h2">Subscription Plans and Billing</h2>
+              <p className="sx-p">
+                We offer monthly, annual, and lifetime plans. Recurring plans renew automatically unless canceled.
+                Payments are processed by third-party providers and we do not store card data.
+              </p>
+            </section>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4">Refund Policy</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              Due to the instant digital nature of our services, all sales are generally final. For detailed refund information,
-              please refer to our <Link to="/refund" className="text-accent hover:underline">Refund Policy</Link>.
-            </p>
-          </section>
+            <section id="s6" ref={(el) => (refs.current.s6 = el)} className="sx-section">
+              <span className="sx-section-num">06</span>
+              <h2 className="sx-h2">Acceptable Use Policy</h2>
+              <h3 className="sx-h3">Prohibited Content</h3>
+              <ul className="sx-ul grid2">
+                {["Adult or pornographic content","Gambling or betting services","Illegal drugs or substances","Weapons or explosives","Violence, hate or discrimination","Minor exploitation","Fraud, phishing or scams","Malware or malicious software","Pirated or counterfeit content","Ponzi or pyramid schemes"].map((i) => (
+                  <li key={i} className="sx-li">{i}</li>
+                ))}
+              </ul>
+              <h3 className="sx-h3">Prohibited Activities</h3>
+              <ul className="sx-ul grid2">
+                {["Artificial traffic (bots, fake clicks)","Ad fraud or manipulation","Reverse engineering the script","Reselling without authorization","Circumventing security systems"].map((i) => (
+                  <li key={i} className="sx-li">{i}</li>
+                ))}
+              </ul>
+              <div className="sx-warning">Violations may result in immediate account termination without refund.</div>
+            </section>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4">Governing Law and Jurisdiction</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              These Terms of Service are governed by the laws of the United States. Any disputes arising from these terms
-              shall be resolved in accordance with applicable law.
-            </p>
-          </section>
+            <section id="s7" ref={(el) => (refs.current.s7 = el)} className="sx-section">
+              <span className="sx-section-num">07</span>
+              <h2 className="sx-h2">Intellectual Property</h2>
+              <p className="sx-p">All technology, scripts, and systems belong to SevenX Media. You receive a limited, non-transferable license.</p>
+            </section>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4">Changes to Terms</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              We reserve the right to modify these terms at any time. Continued use of our services after changes constitutes
-              acceptance of the modified terms.
-            </p>
-          </section>
+            <section id="s8" ref={(el) => (refs.current.s8 = el)} className="sx-section">
+              <span className="sx-section-num">08</span>
+              <h2 className="sx-h2">Service Availability</h2>
+              <p className="sx-p">We do not guarantee uninterrupted service or specific revenue results.</p>
+            </section>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4">Contact Information</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              For questions about these Terms of Service, please contact us through our support channels.
-            </p>
-          </section>
+            <section id="s9" ref={(el) => (refs.current.s9 = el)} className="sx-section">
+              <span className="sx-section-num">09</span>
+              <h2 className="sx-h2">Limitation of Liability</h2>
+              <p className="sx-p">Liability is limited to the amount paid in the last 12 months. We are not responsible for indirect damages or third-party issues.</p>
+            </section>
+
+            <section id="s10" ref={(el) => (refs.current.s10 = el)} className="sx-section">
+              <span className="sx-section-num">10</span>
+              <h2 className="sx-h2">Cancellation</h2>
+              <p className="sx-p">You may cancel anytime. Access remains until the end of the billing cycle. No refunds for the current period.</p>
+            </section>
+
+            <section id="s11" ref={(el) => (refs.current.s11 = el)} className="sx-section">
+              <span className="sx-section-num">11</span>
+              <h2 className="sx-h2">Termination by Us</h2>
+              <p className="sx-p">We may terminate accounts for violations, legal requirements, or inactivity.</p>
+            </section>
+
+            <section id="s12" ref={(el) => (refs.current.s12 = el)} className="sx-section">
+              <span className="sx-section-num">12</span>
+              <h2 className="sx-h2">Lifetime Plan</h2>
+              <p className="sx-p">Lifetime access applies while the service operates. If discontinued, 90 days notice will be provided.</p>
+            </section>
+
+            <section id="s13" ref={(el) => (refs.current.s13 = el)} className="sx-section">
+              <span className="sx-section-num">13</span>
+              <h2 className="sx-h2">Indemnification</h2>
+              <p className="sx-p">You agree to indemnify SevenX Media against claims related to your use of the service.</p>
+            </section>
+
+            <section id="s14" ref={(el) => (refs.current.s14 = el)} className="sx-section">
+              <span className="sx-section-num">14</span>
+              <h2 className="sx-h2">Changes to Terms</h2>
+              <p className="sx-p">Terms may be updated with 15 days notice. Continued use means acceptance.</p>
+            </section>
+
+            <section id="s15" ref={(el) => (refs.current.s15 = el)} className="sx-section">
+              <span className="sx-section-num">15</span>
+              <h2 className="sx-h2">Governing Law</h2>
+              <p className="sx-p">These Terms are governed by the laws of Brazil. Jurisdiction: Sete Lagoas, Minas Gerais.</p>
+            </section>
+
+            <section id="s16" ref={(el) => (refs.current.s16 = el)} className="sx-section">
+              <span className="sx-section-num">16</span>
+              <h2 className="sx-h2">Contact</h2>
+              <p className="sx-p">
+                For questions or concerns, reach us at{" "}
+                <a href="mailto:support@sevenxmedia.io" className="sx-link">support@sevenxmedia.io</a>
+              </p>
+            </section>
+          </main>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
