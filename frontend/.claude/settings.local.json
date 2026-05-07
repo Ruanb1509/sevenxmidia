@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C \"C:\\\\Users\\\\RuanB\\\\Documents\\\\Projetos\\\\Sevenxmidia\\\\frontend\" diff src/pages/LandingPage.js)",
+      "Bash(git -C \"C:\\\\Users\\\\RuanB\\\\Documents\\\\Projetos\\\\Sevenxmidia\\\\frontend\" mv src/pages/Pagestyles.js src/pages/PageStyles_tmp.js)",
+      "Bash(git -C \"C:\\\\Users\\\\RuanB\\\\Documents\\\\Projetos\\\\Sevenxmidia\\\\frontend\" mv src/pages/PageStyles_tmp.js src/pages/PageStyles.js)",
+      "Bash(git *)"
+    ]
+  }
+}

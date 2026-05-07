@@ -298,7 +298,7 @@ SevenX Media is an ad optimization SaaS for web publishers with international au
       </section>
 
       {/* Pricing Section - Keep existing but add ID */}
-      <section id="pricing" className="py-24 px-6 bg-secondary/30" data-testid="comparison-section">
+      {/* <section id="pricing" className="py-24 px-6 bg-secondary/30" data-testid="comparison-section">
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-2 gap-8">
             <motion.div
@@ -325,7 +325,7 @@ SevenX Media is an ad optimization SaaS for web publishers with international au
               </ul>
             </motion.div>
 
-            <motion.div
+             <motion.div
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -350,7 +350,7 @@ SevenX Media is an ad optimization SaaS for web publishers with international au
             </motion.div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Pricing Section */}
       <section id="pricing" className="py-32 px-6" data-testid="pricing-section">
@@ -362,7 +362,7 @@ SevenX Media is an ad optimization SaaS for web publishers with international au
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Monthly Plan */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -452,47 +452,6 @@ SevenX Media is an ad optimization SaaS for web publishers with international au
               </Button>
             </motion.div>
 
-            {/* Lifetime Plan */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="border border-border rounded-md p-8 hover:border-primary/50 transition-colors duration-300"
-              data-testid="lifetime-plan-card"
-            >
-              <h3 className="text-2xl font-bold mb-2" data-testid="lifetime-plan-title">Lifetime Access</h3>
-              <div className="mb-6">
-                <span className="text-5xl font-bold" data-testid="lifetime-plan-price">$199.99</span>
-              </div>
-              <ul className="space-y-3 mb-8 border-t border-border pt-6">
-                <li className="flex items-center gap-3">
-                  <Check className="h-4 w-4 text-accent" />
-                  <span className="text-sm">One-time Payment</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <Check className="h-4 w-4 text-accent" />
-                  <span className="text-sm">Never see ads again forever</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <Check className="h-4 w-4 text-accent" />
-                  <span className="text-sm">Gold "Founder" Profile Badge</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <Check className="h-4 w-4 text-accent" />
-                  <span className="text-sm">Direct Dev Support</span>
-                </li>
-              </ul>
-              <Button
-                className="w-full rounded-md active:scale-95 transition-transform"
-                variant="outline"
-                onClick={() => handleCheckout("lifetime")}
-                disabled={loading === "lifetime"}
-                data-testid="lifetime-plan-button"
-              >
-                {loading === "lifetime" ? "Processing..." : "Become a lifetime access"}
-              </Button>
-            </motion.div>
           </div>
         </div>
       </section>
