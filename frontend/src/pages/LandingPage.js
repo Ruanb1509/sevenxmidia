@@ -18,7 +18,7 @@ const WHOP_PLANS = {
 
 const LandingPage = () => {
   const [loading, setLoading] = useState(null);
-  const [paymentProvider, setPaymentProvider] = useState("stripe"); // 'stripe' or 'whop'
+  const [paymentProvider, setPaymentProvider] = useState("whop"); // 'stripe' or 'whop'
 
 const handleCheckout = async (planType) => {
   setLoading(planType);
