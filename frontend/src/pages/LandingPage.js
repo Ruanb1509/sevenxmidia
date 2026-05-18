@@ -508,7 +508,7 @@ SevenX Media is an ad optimization SaaS for web publishers with international au
             {/* Left Column */}
             <div className="text-left">
               <p className="text-sm font-semibold text-foreground mb-4">
-                © 2024-2025 SevenX Media (sevenxmedia.io). All rights reserved.
+                © 2024-2026 SevenX Media (sevenxmedia.io). All rights reserved.
               </p>
               <p className="text-sm text-muted-foreground mb-2">
                 Contact support: <a href="mailto:support@sevenxmedia.io" className="text-primary hover:underline">support@sevenxmedia.io</a>
