@@ -3,6 +3,12 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const router = express.Router();
 
+// Whop plan IDs
+const WHOP_PLANS = {
+  monthly: 'plan_cAqnWoI4YZoDn',
+  yearly: 'plan_9tztkzFseQyfQ',
+};
+
 router.post('/vip-payment', async (req, res) => {
   const { planType } = req.body;
 
@@ -44,6 +50,30 @@ router.post('/vip-payment', async (req, res) => {
   } catch (error) {
     console.error('Stripe checkout error:', error);
     res.status(500).json({ error: 'Erro ao criar sessão de checkout' });
+  }
+});
+
+// Whop checkout endpoint
+router.post('/whop-payment', async (req, res) => {
+  const { planType } = req.body;
+
+  if (!['monthly', 'yearly'].includes(planType)) {
+    return res.status(400).json({ error: 'Tipo de plano inválido para Whop.' });
+  }
+
+  try {
+    const whopPlanId = WHOP_PLANS[planType];
+    
+    if (!whopPlanId) {
+      return res.status(500).json({ error: 'Plano Whop não configurado.' });
+    }
+
+    const whopCheckoutUrl = `https://whop.com/checkout/${whopPlanId}`;
+    
+    res.json({ url: whopCheckoutUrl });
+  } catch (error) {
+    console.error('Whop checkout error:', error);
+    res.status(500).json({ error: 'Erro ao criar sessão de checkout do Whop' });
   }
 });
 

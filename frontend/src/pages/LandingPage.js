@@ -10,13 +10,28 @@ import Header from "../components/Header";
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}`;
 
+// Whop plan IDs
+const WHOP_PLANS = {
+  monthly: "plan_cAqnWoI4YZoDn",
+  yearly: "plan_9tztkzFseQyfQ",
+};
+
 const LandingPage = () => {
   const [loading, setLoading] = useState(null);
+  const [paymentProvider, setPaymentProvider] = useState("stripe"); // 'stripe' or 'whop'
 
 const handleCheckout = async (planType) => {
   setLoading(planType);
 
   try {
+    if (paymentProvider === "whop") {
+      // Whop checkout - direct redirect
+      const whopPlanId = WHOP_PLANS[planType] || WHOP_PLANS.monthly;
+      window.location.href = `https://whop.com/checkout/${whopPlanId}`;
+      return;
+    }
+
+    // Stripe checkout - existing logic
     const normalizedPlan =
       planType === "yearly"
         ? "annual"
@@ -357,9 +372,29 @@ SevenX Media is an ad optimization SaaS for web publishers with international au
         <div className="container mx-auto max-w-7xl">
           <div className="text-center mb-16">
             <h2 className="text-5xl font-bold tracking-tight mb-4" data-testid="pricing-title">Choose Your Plan</h2>
-            <p className="text-xl text-muted-foreground" data-testid="pricing-subtitle">
+            <p className="text-xl text-muted-foreground mb-8" data-testid="pricing-subtitle">
               Select the perfect plan for your needs
             </p>
+            
+            {/* Payment Provider Toggle */}
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <span className={`text-sm font-medium ${paymentProvider === 'stripe' ? 'text-foreground' : 'text-muted-foreground'}`}>
+                Stripe
+              </span>
+              <button
+                onClick={() => setPaymentProvider(paymentProvider === 'stripe' ? 'whop' : 'stripe')}
+                className="relative inline-flex h-8 w-14 items-center rounded-full bg-muted border border-border hover:border-primary transition-colors"
+              >
+                <span
+                  className={`inline-block h-6 w-6 transform rounded-full bg-primary transition-transform ${
+                    paymentProvider === 'whop' ? 'translate-x-7' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+              <span className={`text-sm font-medium ${paymentProvider === 'whop' ? 'text-foreground' : 'text-muted-foreground'}`}>
+                Whop
+              </span>
+            </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -395,15 +430,20 @@ SevenX Media is an ad optimization SaaS for web publishers with international au
                   <span className="text-sm">Automated Activation</span>
                 </li>
               </ul>
-              <Button
-                className="w-full rounded-md active:scale-95 transition-transform"
-                variant="outline"
-                onClick={() => handleCheckout("monthly")}
-                disabled={loading === "monthly"}
-                data-testid="monthly-plan-button"
-              >
-                {loading === "monthly" ? "Processing..." : "Subscribe Monthly"}
-              </Button>
+              <div className="flex flex-col gap-3">
+                <div className="text-xs text-center text-muted-foreground">
+                  Checkout via <span className="font-semibold text-foreground">{paymentProvider === 'stripe' ? 'Stripe' : 'Whop'}</span>
+                </div>
+                <Button
+                  className="w-full rounded-md active:scale-95 transition-transform"
+                  variant="outline"
+                  onClick={() => handleCheckout("monthly")}
+                  disabled={loading === "monthly"}
+                  data-testid="monthly-plan-button"
+                >
+                  {loading === "monthly" ? "Processing..." : "Subscribe Monthly"}
+                </Button>
+              </div>
             </motion.div>
 
             {/* Yearly Plan */}
@@ -442,14 +482,19 @@ SevenX Media is an ad optimization SaaS for web publishers with international au
                   <span className="text-sm">Early Access to New Articles</span>
                 </li>
               </ul>
-              <Button
-                className="w-full rounded-md active:scale-95 transition-transform"
-                onClick={() => handleCheckout("yearly")}
-                disabled={loading === "yearly"}
-                data-testid="yearly-plan-button"
-              >
-                {loading === "yearly" ? "Processing..." : "Subscribe Yearly"}
-              </Button>
+              <div className="flex flex-col gap-3">
+                <div className="text-xs text-center text-muted-foreground">
+                  Checkout via <span className="font-semibold text-foreground">{paymentProvider === 'stripe' ? 'Stripe' : 'Whop'}</span>
+                </div>
+                <Button
+                  className="w-full rounded-md active:scale-95 transition-transform"
+                  onClick={() => handleCheckout("yearly")}
+                  disabled={loading === "yearly"}
+                  data-testid="yearly-plan-button"
+                >
+                  {loading === "yearly" ? "Processing..." : "Subscribe Yearly"}
+                </Button>
+              </div>
             </motion.div>
 
           </div>
