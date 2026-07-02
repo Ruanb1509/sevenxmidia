@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Check, X, ArrowRight } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
 import { Button } from "../components/ui/button";
-import { loadStripe } from "@stripe/stripe-js";
 import { toast } from "sonner";
 import Header from "../components/Header";
 
@@ -18,48 +17,17 @@ const WHOP_PLANS = {
 
 const LandingPage = () => {
   const [loading, setLoading] = useState(null);
-  const [paymentProvider, setPaymentProvider] = useState("whop"); // 'stripe' or 'whop'
 
-const handleCheckout = async (planType) => {
+const handleCheckout = (planType) => {
   setLoading(planType);
 
   try {
-    if (paymentProvider === "whop") {
-      // Whop checkout - direct redirect
-      const whopPlanId = WHOP_PLANS[planType] || WHOP_PLANS.monthly;
-      window.location.href = `https://whop.com/checkout/${whopPlanId}`;
-      return;
-    }
-
-    // Stripe checkout - existing logic
-    const normalizedPlan =
-      planType === "yearly"
-        ? "annual"
-        : planType; // monthly ou lifetime
-
-    const response = await fetch(`${API}/pay/vip-payment`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        planType: normalizedPlan,
-      }),
-    });
-
-    const data = await response.json().catch(() => null);
-
-    if (!response.ok) {
-      throw new Error(data?.error || "Failed to create checkout session");
-    }
-
-    if (!data?.url) {
-      throw new Error("Checkout URL not returned by server.");
-    }
-
-    window.location.href = data.url;
+    // Whop checkout - direct redirect
+    const whopPlanId = WHOP_PLANS[planType] || WHOP_PLANS.monthly;
+    window.location.href = `https://whop.com/checkout/${whopPlanId}`;
   } catch (error) {
     console.error("Checkout error:", error);
     toast.error(error.message || "Failed to initiate checkout.");
-  } finally {
     setLoading(null);
   }
 };
@@ -82,11 +50,11 @@ const handleCheckout = async (planType) => {
           >
             <div className="inline-block px-4 py-2 mb-8 border border-border rounded-md">
               <span className="text-xs uppercase tracking-widest font-medium" data-testid="hero-badge">
-                Premium Ad-Free Experience
+                Ad Optimization for Publishers
               </span>
             </div>
             <h1 className="text-6xl lg:text-7xl font-bold tracking-tight mb-6" data-testid="hero-title">
-              Maximize your ad revenue withn
+              Maximize your ad revenue with
               <br />
               intelligent network selection.
             </h1>
@@ -118,48 +86,11 @@ SevenX Media is an ad optimization SaaS for web publishers with international au
           >
             <h2 className="text-4xl lg:text-5xl font-bold mb-6">About SevenX Media</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              We are a cutting-edge digital advertising and media platform dedicated to connecting brands 
-              with their audiences through innovative, data-driven campaigns.
+              SevenX Media is an ad optimization platform for web publishers. Our script analyzes each visitor
+              and automatically routes them to the highest-performing ad network available, helping publishers
+              with international, tier-1 traffic maximize their revenue per impression.
             </p>
           </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="bg-white dark:bg-slate-900 p-8 rounded-lg border border-border"
-            >
-              <div className="text-4xl font-bold text-primary mb-4">500K+</div>
-              <h3 className="text-lg font-bold mb-2">Active Users</h3>
-              <p className="text-muted-foreground">Trusted by creators and brands worldwide</p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="bg-white dark:bg-slate-900 p-8 rounded-lg border border-border"
-            >
-              <div className="text-4xl font-bold text-primary mb-4">10B+</div>
-              <h3 className="text-lg font-bold mb-2">Ad Impressions</h3>
-              <p className="text-muted-foreground">Monthly reach across our network</p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="bg-white dark:bg-slate-900 p-8 rounded-lg border border-border"
-            >
-              <div className="text-4xl font-bold text-primary mb-4">98%</div>
-              <h3 className="text-lg font-bold mb-2">Satisfaction Rate</h3>
-              <p className="text-muted-foreground">Exceeding client expectations daily</p>
-            </motion.div>
-          </div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -170,26 +101,27 @@ SevenX Media is an ad optimization SaaS for web publishers with international au
           >
             <h3 className="text-2xl font-bold mb-4">Our Mission</h3>
             <p className="text-lg text-muted-foreground mb-6">
-              SevenX Media is committed to revolutionizing the advertising industry by providing transparent, 
-              ethical, and effective digital marketing solutions. We believe in the power of data-driven insights 
-              combined with creative excellence to help businesses of all sizes reach their goals.
+              SevenX Media helps web publishers get the most out of their traffic. By using data-driven network
+              selection instead of a single fixed ad provider, we help publishers increase revenue per
+              impression — especially those serving international, tier-1 audiences who need alternatives to
+              standard ad platforms.
             </p>
             <ul className="grid md:grid-cols-2 gap-4">
               <li className="flex items-center gap-3">
                 <Check className="h-5 w-5 text-primary flex-shrink-0" />
-                <span>Transparent Analytics & Reporting</span>
+                <span>Automated ad network selection per visitor</span>
               </li>
               <li className="flex items-center gap-3">
                 <Check className="h-5 w-5 text-primary flex-shrink-0" />
-                <span>24/7 Premium Support</span>
+                <span>Geolocation & contextual optimization</span>
               </li>
               <li className="flex items-center gap-3">
                 <Check className="h-5 w-5 text-primary flex-shrink-0" />
-                <span>Advanced Targeting Capabilities</span>
+                <span>Revenue analytics dashboard</span>
               </li>
               <li className="flex items-center gap-3">
                 <Check className="h-5 w-5 text-primary flex-shrink-0" />
-                <span>Real-time Campaign Optimization</span>
+                <span>Publisher-focused support</span>
               </li>
             </ul>
           </motion.div>
@@ -208,7 +140,7 @@ SevenX Media is an ad optimization SaaS for web publishers with international au
           >
             <h2 className="text-4xl lg:text-5xl font-bold mb-6">Why Choose SevenX Media?</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Experience the difference that premium advertising platform brings to your campaigns
+              The advantages our optimization script brings to your publisher revenue
             </p>
           </motion.div>
 
@@ -225,7 +157,7 @@ SevenX Media is an ad optimization SaaS for web publishers with international au
               </div>
               <h3 className="text-xl font-bold mb-3">Advanced Analytics</h3>
               <p className="text-muted-foreground">
-                Get deep insights into your campaign performance with our comprehensive analytics dashboard.
+                Track your revenue per impression, network performance, and traffic breakdown through a comprehensive publisher dashboard.
               </p>
             </motion.div>
 
@@ -239,9 +171,9 @@ SevenX Media is an ad optimization SaaS for web publishers with international au
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                 <span className="text-2xl">🎯</span>
               </div>
-              <h3 className="text-xl font-bold mb-3">Precise Targeting</h3>
+              <h3 className="text-xl font-bold mb-3">Smart Network Selection</h3>
               <p className="text-muted-foreground">
-                Reach your ideal audience with laser-focused targeting options based on demographics, interests, and behavior.
+                Our script evaluates each visitor by geolocation and contextual signals to route them to the best-performing ad network in real time.
               </p>
             </motion.div>
 
@@ -257,7 +189,7 @@ SevenX Media is an ad optimization SaaS for web publishers with international au
               </div>
               <h3 className="text-xl font-bold mb-3">Lightning Fast</h3>
               <p className="text-muted-foreground">
-                Our infrastructure ensures your ads are delivered instantly with minimal latency and maximum performance.
+                Lightweight script with minimal latency, so network selection happens instantly without slowing your site down.
               </p>
             </motion.div>
 
@@ -287,9 +219,9 @@ SevenX Media is an ad optimization SaaS for web publishers with international au
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                 <span className="text-2xl">👥</span>
               </div>
-              <h3 className="text-xl font-bold mb-3">Expert Support</h3>
+              <h3 className="text-xl font-bold mb-3">Publisher Support</h3>
               <p className="text-muted-foreground">
-                Dedicated account managers and 24/7 support to help you achieve your advertising goals.
+                Dedicated support to help you integrate the script and optimize your revenue setup.
               </p>
             </motion.div>
 
@@ -303,69 +235,14 @@ SevenX Media is an ad optimization SaaS for web publishers with international au
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                 <span className="text-2xl">📈</span>
               </div>
-              <h3 className="text-xl font-bold mb-3">ROI Focused</h3>
+              <h3 className="text-xl font-bold mb-3">Revenue Focused</h3>
               <p className="text-muted-foreground">
-                We're committed to maximizing your return on investment with data-driven optimizations.
+                Built to maximize your revenue per impression through continuous, data-driven network optimization.
               </p>
             </motion.div>
           </div>
         </div>
       </section>
-
-      {/* Pricing Section - Keep existing but add ID */}
-      {/* <section id="pricing" className="py-24 px-6 bg-secondary/30" data-testid="comparison-section">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid md:grid-cols-2 gap-8">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="border border-border rounded-md p-8 bg-background/50 opacity-60"
-              data-testid="free-user-card"
-            >
-              <h3 className="text-2xl font-bold mb-6">Free User</h3>
-              <ul className="space-y-4">
-                <li className="flex items-center gap-3">
-                  <X className="h-5 w-5 text-destructive" />
-                  <span>Standard loading speed</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <X className="h-5 w-5 text-destructive" />
-                  <span>Contains Banner Ads</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <X className="h-5 w-5 text-destructive" />
-                  <span>Standard Support</span>
-                </li>
-              </ul>
-            </motion.div>
-
-             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="border-2 border-accent rounded-md p-8 bg-background"
-              data-testid="premium-user-card"
-            >
-              <h3 className="text-2xl font-bold mb-6">Premium User</h3>
-              <ul className="space-y-4">
-                <li className="flex items-center gap-3">
-                  <Check className="h-5 w-5 text-accent" />
-                  <span>0% Ads (Ad-free)</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <Check className="h-5 w-5 text-accent" />
-                  <span>2x Faster Loading</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <Check className="h-5 w-5 text-accent" />
-                  <span>Priority Discord Role</span>
-                </li>
-              </ul>
-            </motion.div>
-          </div>
-        </div>
-      </section> */}
 
       {/* Pricing Section */}
       <section id="pricing" className="py-32 px-6" data-testid="pricing-section">
@@ -375,26 +252,6 @@ SevenX Media is an ad optimization SaaS for web publishers with international au
             <p className="text-xl text-muted-foreground mb-8" data-testid="pricing-subtitle">
               Select the perfect plan for your needs
             </p>
-            
-            {/* Payment Provider Toggle */}
-            <div className="flex items-center justify-center gap-4 mb-8">
-              <span className={`text-sm font-medium ${paymentProvider === 'stripe' ? 'text-foreground' : 'text-muted-foreground'}`}>
-                Stripe
-              </span>
-              <button
-                onClick={() => setPaymentProvider(paymentProvider === 'stripe' ? 'whop' : 'stripe')}
-                className="relative inline-flex h-8 w-14 items-center rounded-full bg-muted border border-border hover:border-primary transition-colors"
-              >
-                <span
-                  className={`inline-block h-6 w-6 transform rounded-full bg-primary transition-transform ${
-                    paymentProvider === 'whop' ? 'translate-x-7' : 'translate-x-1'
-                  }`}
-                />
-              </button>
-              <span className={`text-sm font-medium ${paymentProvider === 'whop' ? 'text-foreground' : 'text-muted-foreground'}`}>
-                Whop
-              </span>
-            </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -415,24 +272,30 @@ SevenX Media is an ad optimization SaaS for web publishers with international au
               <ul className="space-y-3 mb-8 border-t border-border pt-6">
                 <li className="flex items-center gap-3">
                   <Check className="h-4 w-4 text-accent" />
-                  <span className="text-sm">Remove all Website Ads</span>
+                  <span className="text-sm">Ad network optimization script</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <Check className="h-4 w-4 text-accent" />
-                  <span className="text-sm">Support independent journalism</span>
+                  {/* TODO: confirmar limite real do plano */}
+                  <span className="text-sm">Up to 1 site</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <Check className="h-4 w-4 text-accent" />
-                  <span className="text-sm">Premium "Supporter" Badge</span>
+                  {/* TODO: confirmar limite real do plano */}
+                  <span className="text-sm">Up to 1M impressions/month</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <Check className="h-4 w-4 text-accent" />
-                  <span className="text-sm">Automated Activation</span>
+                  <span className="text-sm">Revenue analytics dashboard</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <Check className="h-4 w-4 text-accent" />
+                  <span className="text-sm">Automated activation</span>
                 </li>
               </ul>
               <div className="flex flex-col gap-3">
                 <div className="text-xs text-center text-muted-foreground">
-                  Checkout via <span className="font-semibold text-foreground">{paymentProvider === 'stripe' ? 'Stripe' : 'Whop'}</span>
+                  Checkout via <span className="font-semibold text-foreground">Whop</span>
                 </div>
                 <Button
                   className="w-full rounded-md active:scale-95 transition-transform"
@@ -471,20 +334,26 @@ SevenX Media is an ad optimization SaaS for web publishers with international au
                 </li>
                 <li className="flex items-center gap-3">
                   <Check className="h-4 w-4 text-accent" />
-                  <span className="text-sm">Save 45% vs Monthly</span>
+                  {/* TODO: confirmar limite real do plano */}
+                  <span className="text-sm">Up to 3 sites</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <Check className="h-4 w-4 text-accent" />
-                  <span className="text-sm">Exclusive Discord Channel</span>
+                  {/* TODO: confirmar limite real do plano */}
+                  <span className="text-sm">Up to 5M impressions/month</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <Check className="h-4 w-4 text-accent" />
-                  <span className="text-sm">Early Access to New Articles</span>
+                  <span className="text-sm">Priority support</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <Check className="h-4 w-4 text-accent" />
+                  <span className="text-sm">Advanced revenue reporting</span>
                 </li>
               </ul>
               <div className="flex flex-col gap-3">
                 <div className="text-xs text-center text-muted-foreground">
-                  Checkout via <span className="font-semibold text-foreground">{paymentProvider === 'stripe' ? 'Stripe' : 'Whop'}</span>
+                  Checkout via <span className="font-semibold text-foreground">Whop</span>
                 </div>
                 <Button
                   className="w-full rounded-md active:scale-95 transition-transform"
