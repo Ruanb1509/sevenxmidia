@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+// Stripe é opcional: sem chave, o app sobe normalmente e só esta rota fica inativa.
+const stripe = process.env.STRIPE_SECRET_KEY
+  ? require('stripe')(process.env.STRIPE_SECRET_KEY)
+  : null;
 const { User } = require('../models');
 
 router.post('/create-portal-session', async (req, res) => {

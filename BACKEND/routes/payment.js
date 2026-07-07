@@ -1,5 +1,8 @@
 const express = require('express');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+// Stripe é opcional: sem chave, o app sobe normalmente e só estas rotas ficam inativas.
+const stripe = process.env.STRIPE_SECRET_KEY
+  ? require('stripe')(process.env.STRIPE_SECRET_KEY)
+  : null;
 
 const router = express.Router();
 
