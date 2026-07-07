@@ -38,6 +38,27 @@ app.use('/pay', payRouter);
 app.use('/stripe-portal', StripePortal);
 app.use('/dashboard', dashboardRouter);
 
+// TEMP: diagnóstico de conexão com o banco. REMOVER depois de resolver.
+app.get('/__dbcheck', async (req, res) => {
+  const db = require('./models');
+  const cfg = db.sequelize.config;
+  try {
+    await db.sequelize.authenticate();
+    res.json({ ok: true, host: cfg.host, port: cfg.port, database: cfg.database });
+  } catch (err) {
+    res.status(500).json({
+      ok: false,
+      host: cfg.host,
+      port: cfg.port,
+      code: err.parent && err.parent.code,
+      message: err.message,
+      hasPostgresUrl: !!process.env.POSTGRES_URL,
+      vercel: !!process.env.VERCEL,
+      nodeEnv: process.env.NODE_ENV || null,
+    });
+  }
+});
+
 // PostgreSQL (via Pool)
 const pool = new Pool({
   connectionString: process.env.POSTGRES_URL,
