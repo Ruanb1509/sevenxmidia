@@ -6,8 +6,19 @@ const Sequelize = require('sequelize');
 const process = require('process');
 
 const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
+
+/**
+ * ==============================
+ * DETECÇÃO DE AMBIENTE
+ * ==============================
+ * Produção = rodando na Vercel (VERCEL) OU NODE_ENV=production.
+ * Não dependemos só de NODE_ENV porque a Vercel nem sempre o injeta,
+ * o que fazia o Sequelize cair no banco local (127.0.0.1:5432).
+ */
+const isProduction =
+  process.env.NODE_ENV === 'production' || !!process.env.VERCEL;
+const env = isProduction ? 'production' : (process.env.NODE_ENV || 'development');
+const config = require(__dirname + '/../config/config.json')[env] || {};
 
 const db = {};
 let sequelize;
@@ -20,7 +31,7 @@ let sequelize;
  * - production   -> POSTGRES_URL (SSL)
  * Nunca mistura os dois
  */
-if (env === 'production') {
+if (isProduction) {
   if (!process.env.POSTGRES_URL) {
     throw new Error('POSTGRES_URL não definida em produção');
   }
@@ -108,7 +119,7 @@ db.Sequelize = Sequelize;
  * - Pode ser forçado localmente
  */
 db.syncDatabase = async (options = {}) => {
-  const isProd = env === 'production';
+  const isProd = isProduction;
 
   const syncOptions = {
     force: false,
