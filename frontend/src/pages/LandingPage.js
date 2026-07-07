@@ -11,10 +11,9 @@ const API = `${BACKEND_URL}`;
 
 // Whop plan IDs
 const WHOP_PLANS = {
-  monthly: "plan_cAqnWoI4YZoDn",
-  yearly: "plan_9tztkzFseQyfQ",
-  // TODO: criar o plano Lifetime ($200, pagamento único) no Whop e colar o ID aqui
-  lifetime: null,
+  monthly: "plan_onwM5nKi3rqUs",
+  yearly: "plan_fOaWp9ercfoBx",
+  lifetime: "plan_pI0m0CKux1fFU",
 };
 
 const LandingPage = () => {

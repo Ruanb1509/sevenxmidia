@@ -5,8 +5,9 @@ const router = express.Router();
 
 // Whop plan IDs
 const WHOP_PLANS = {
-  monthly: 'plan_cAqnWoI4YZoDn',
-  yearly: 'plan_9tztkzFseQyfQ',
+  monthly: 'plan_onwM5nKi3rqUs',
+  yearly: 'plan_fOaWp9ercfoBx',
+  lifetime: 'plan_pI0m0CKux1fFU',
 };
 
 router.post('/vip-payment', async (req, res) => {
@@ -57,7 +58,7 @@ router.post('/vip-payment', async (req, res) => {
 router.post('/whop-payment', async (req, res) => {
   const { planType } = req.body;
 
-  if (!['monthly', 'yearly'].includes(planType)) {
+  if (!['monthly', 'yearly', 'lifetime'].includes(planType)) {
     return res.status(400).json({ error: 'Tipo de plano inválido para Whop.' });
   }
 
