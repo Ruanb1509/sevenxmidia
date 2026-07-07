@@ -11,12 +11,19 @@ const basename = path.basename(__filename);
  * ==============================
  * DETECÇÃO DE AMBIENTE
  * ==============================
- * Produção = rodando na Vercel (VERCEL) OU NODE_ENV=production.
- * Não dependemos só de NODE_ENV porque a Vercel nem sempre o injeta,
- * o que fazia o Sequelize cair no banco local (127.0.0.1:5432).
+ * Sinal mais confiável = a própria POSTGRES_URL. Se ela existe, usamos o
+ * banco de produção (Supabase), a MENOS que NODE_ENV seja explicitamente
+ * 'development' (o caso do .env local).
+ *
+ * Não dependemos de process.env.VERCEL nem de NODE_ENV==='production'
+ * porque a Vercel nem sempre injeta essas flags no runtime serverless —
+ * era isso que fazia o Sequelize cair no banco local (127.0.0.1:5432)
+ * mesmo em produção.
  */
 const isProduction =
-  process.env.NODE_ENV === 'production' || !!process.env.VERCEL;
+  process.env.NODE_ENV === 'production' ||
+  !!process.env.VERCEL ||
+  (!!process.env.POSTGRES_URL && process.env.NODE_ENV !== 'development');
 const env = isProduction ? 'production' : (process.env.NODE_ENV || 'development');
 const config = require(__dirname + '/../config/config.json')[env] || {};
 
