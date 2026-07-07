@@ -76,4 +76,13 @@ if (process.env.NODE_ENV === 'development') {
   }
 }
 
-startServer();
+/**
+ * Na Vercel (serverless) o app é exportado como handler — não há
+ * app.listen; cada request sobe/reusa uma function. Localmente,
+ * sobe o servidor HTTP normal.
+ */
+if (process.env.VERCEL) {
+  module.exports = app;
+} else {
+  startServer();
+}
