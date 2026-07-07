@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- SevenX Media — versão vetorial da logo original (logo.png),
+       proporções medidas do arquivo fonte "S x 2.0 (9).png" -->
+  <circle cx="32" cy="32" r="30.5" stroke="#6E6E6E" stroke-width="2"/>
+  <line x1="0" y1="30.4" x2="64" y2="30.4" stroke="#0A0A0A" stroke-width="1.9"/>
+  <path d="M 24.2 14.3 C 16.5 9.3, 3.8 11.8, 3.8 20.3 C 3.8 29, 26.3 27.5, 26.3 38.3 C 26.3 48, 10.5 52.5, 2.8 46.5"
+        stroke="#0A0A0A" stroke-width="1.9" stroke-linecap="round" fill="none"/>
+  <path d="M 31.2 12.2 L 63.5 50.7 M 61.7 12 L 29.8 50.9"
+        stroke="#0A0A0A" stroke-width="1.9" stroke-linecap="round"/>
+  <path d="M 39.9 12 L 46.8 23 L 53 12"
+        stroke="#0A0A0A" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M 39.3 50.7 L 46.8 37.9 L 54 50.7"
+        stroke="#0A0A0A" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

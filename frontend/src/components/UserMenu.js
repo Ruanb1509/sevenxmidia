@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
-import { LogOut, Settings, User } from 'lucide-react';
+import { LogOut, Settings, User, LayoutDashboard } from 'lucide-react';
 
 const UserMenu = () => {
   const navigate = useNavigate();
@@ -54,10 +54,16 @@ const UserMenu = () => {
           <p className="font-medium">{user.name}</p>
           <p className="text-xs text-muted-foreground">{user.email}</p>
           {user.isVip && (
-            <p className="text-xs text-amber-600 font-medium mt-1">VIP</p>
+            <p className="text-xs text-amber-600 font-medium mt-1">Subscriber</p>
           )}
         </div>
         <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link to="/dashboard" className="cursor-pointer">
+            <LayoutDashboard className="mr-2 h-4 w-4" />
+            Dashboard
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link to="/profile" className="cursor-pointer">
             <User className="mr-2 h-4 w-4" />

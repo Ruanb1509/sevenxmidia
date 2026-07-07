@@ -1,9 +1,23 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const { Pool } = require('pg');
 require('dotenv').config();
 
 const app = express();
+
+/**
+ * Rotas PÚBLICAS do script do publisher — registradas ANTES do CORS
+ * restrito, pois rodam em sites de terceiros (qualquer origem).
+ */
+const collectRouter = require('./routes/collect');
+app.use('/collect', collectRouter);
+
+app.get('/sxm.js', (req, res) => {
+  res.type('application/javascript');
+  res.set('Cache-Control', 'public, max-age=300');
+  res.sendFile(path.join(__dirname, 'public', 'sxm.js'));
+});
 
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'https://localhost:3000',
@@ -16,11 +30,13 @@ const webhookRouter = require('./routes/webhook');
 const authRouter = require('./routes/auth');
 const payRouter = require('./routes/payment');
 const StripePortal = require('./routes/stripeportal');
+const dashboardRouter = require('./routes/dashboard');
 
 app.use('/webhook', webhookRouter);
 app.use('/auth', authRouter);
 app.use('/pay', payRouter);
 app.use('/stripe-portal', StripePortal);
+app.use('/dashboard', dashboardRouter);
 
 // PostgreSQL (via Pool)
 const pool = new Pool({

@@ -67,7 +67,7 @@ const ProfilePage = () => {
                                     {user.isVip && (
                                         <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm font-medium">
                                             <Trophy className="w-4 h-4" />
-                                            VIP Member
+                                            Active Subscriber
                                         </div>
                                     )}
                                 </div>
@@ -83,16 +83,16 @@ const ProfilePage = () => {
                     {/* Stats Grid */}
                     <div className="grid md:grid-cols-3 gap-6 mb-8">
                         <Card className="p-6 text-center">
-                            <div className="text-3xl font-bold text-primary mb-2">12</div>
-                            <p className="text-muted-foreground">Campaigns</p>
+                            <div className="text-3xl font-bold text-primary mb-2">1</div>
+                            <p className="text-muted-foreground">Active Sites</p>
                         </Card>
                         <Card className="p-6 text-center">
-                            <div className="text-3xl font-bold text-primary mb-2">1.2M</div>
-                            <p className="text-muted-foreground">Impressions</p>
+                            <div className="text-3xl font-bold text-primary mb-2">842K</div>
+                            <p className="text-muted-foreground">Impressions (30d)</p>
                         </Card>
                         <Card className="p-6 text-center">
-                            <div className="text-3xl font-bold text-primary mb-2">8.5%</div>
-                            <p className="text-muted-foreground">Click Rate</p>
+                            <div className="text-3xl font-bold text-primary mb-2">$1.53</div>
+                            <p className="text-muted-foreground">Avg. RPM</p>
                         </Card>
                     </div>
 
@@ -119,7 +119,7 @@ const ProfilePage = () => {
                                 </div>
                                 <div>
                                     <p className="text-sm text-muted-foreground mb-2">Account Type</p>
-                                    <p className="font-medium">{user.isAdmin ? "Administrator" : user.isVip ? "VIP" : "Standard"}</p>
+                                    <p className="font-medium">{user.isAdmin ? "Administrator" : user.isVip ? "Subscriber" : "Free"}</p>
                                 </div>
                             </div>
                         </Card>
@@ -128,14 +128,14 @@ const ProfilePage = () => {
                         <Card className="p-6">
                             <h2 className="text-xl font-bold mb-6">Quick Actions</h2>
                             <div className="space-y-3">
-                                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/")}>
+                                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/dashboard")}>
                                     View Dashboard
                                 </Button>
-                                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/")}>
-                                    Create Campaign
+                                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/dashboard")}>
+                                    Get Optimization Script
                                 </Button>
-                                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/")}>
-                                    View Analytics
+                                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/dashboard")}>
+                                    Revenue Reports
                                 </Button>
                                 <Button variant="outline" className="w-full justify-start gap-2" onClick={() => navigate("/settings")}>
                                     <Settings className="w-4 h-4" />
@@ -149,13 +149,17 @@ const ProfilePage = () => {
                     <Card className="p-6 mt-8">
                         <h2 className="text-xl font-bold mb-6">Recent Activity</h2>
                         <div className="space-y-4">
-                            {[1, 2, 3].map((item) => (
-                                <div key={item} className="flex items-center justify-between pb-4 border-b last:border-b-0">
+                            {[
+                                { title: "Network selection updated for US traffic", when: "2 hours ago", value: "+$4.20 est. daily" },
+                                { title: "Optimization script verified on your site", when: "1 day ago", value: "Active" },
+                                { title: "Monthly revenue report generated", when: "3 days ago", value: "$1,284.50" },
+                            ].map((item) => (
+                                <div key={item.title} className="flex items-center justify-between pb-4 border-b last:border-b-0">
                                     <div>
-                                        <p className="font-medium">Campaign activity #{item}</p>
-                                        <p className="text-sm text-muted-foreground">2 days ago</p>
+                                        <p className="font-medium">{item.title}</p>
+                                        <p className="text-sm text-muted-foreground">{item.when}</p>
                                     </div>
-                                    <span className="text-sm font-medium text-primary">+245 clicks</span>
+                                    <span className="text-sm font-medium text-primary">{item.value}</span>
                                 </div>
                             ))}
                         </div>

@@ -74,17 +74,23 @@ const TermsPage = () => {
           <main>
             <span className="sx-tag">Legal Document</span>
             <h1 className="sx-page-title" data-testid="terms-title">Terms of Service</h1>
-            <p className="sx-date">Last updated: April 16, 2026</p>
+            <p className="sx-date">Last updated: July 7, 2026</p>
 
             <section id="s1" ref={(el) => (refs.current.s1 = el)} className="sx-section">
               <span className="sx-section-num">01</span>
               <h2 className="sx-h2">Service Description</h2>
               <p className="sx-p">
                 SevenX Media ("we", "our", "us") operates sevenxmedia.io, a SaaS platform that provides ad optimization technology for web publishers.
-                Our proprietary script uses probabilistic models and data analysis to determine the best-performing ad network for each website visitor
-                based on geolocation and other contextual signals, maximizing publisher revenue per impression.
+                For each website visitor, our script selects — based on the visitor's region — the ad network expected to perform well for that audience,
+                and routes the impression accordingly. Results depend on your traffic and on the ad networks involved; no specific outcome is guaranteed.
               </p>
-              <p className="sx-p">The Service includes: access to the optimization script, analytics dashboard, A/B testing tools, and related features.</p>
+              <p className="sx-p">The Service includes: access to the optimization script, the analytics dashboard, and related features.</p>
+              <p className="sx-p">
+                The Service routes impressions between the ad networks used on your site. You maintain your own
+                accounts with each ad network, and each network pays you directly under its own terms. SevenX Media
+                does not collect, hold, or intermediate your advertising revenue — our only charge is the
+                subscription fee for the Service.
+              </p>
             </section>
 
             <section id="s2" ref={(el) => (refs.current.s2 = el)} className="sx-section">
@@ -130,6 +136,13 @@ const TermsPage = () => {
                 ))}
               </ul>
               <div className="sx-warning">Violations may result in immediate account termination without refund.</div>
+              <h3 className="sx-h3">Ad Network Policies</h3>
+              <p className="sx-p">
+                You are responsible for complying with the policies and terms of each ad network you connect
+                to the Service — including content, placement, format, and consent requirements. SevenX Media
+                is an independent tool and is not affiliated with, endorsed by, sponsored by, or certified by
+                any ad network. All ad network names and trademarks belong to their respective owners.
+              </p>
             </section>
 
             <section id="s7" ref={(el) => (refs.current.s7 = el)} className="sx-section">
@@ -142,6 +155,7 @@ const TermsPage = () => {
               <span className="sx-section-num">08</span>
               <h2 className="sx-h2">Service Availability</h2>
               <p className="sx-p">We do not guarantee uninterrupted service or specific revenue results.</p>
+              <p className="sx-p">Metrics displayed in the SevenX Media dashboard (such as revenue, impressions, and RPM) are estimates and may include small variations. The authoritative figures are those reported in the dashboard of each ad network that serves your traffic.</p>
             </section>
 
             <section id="s9" ref={(el) => (refs.current.s9 = el)} className="sx-section">

@@ -67,17 +67,41 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         unique: true,
       },
+      // --- SaaS: credenciais de integração do publisher ---
+      siteId: {
+        type: DataTypes.STRING,      // ID público usado no snippet do script
+        allowNull: true,
+        unique: true,
+      },
+      apiKey: {
+        type: DataTypes.STRING,      // token secreto de API do publisher
+        allowNull: true,
+      },
+      apiKeyGeneratedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+      scriptStatus: {
+        type: DataTypes.STRING,      // 'pending' | 'active'
+        allowNull: false,
+        defaultValue: 'pending',
+      },
     }, {
       // SEGURANÇA: defaultScope exclui campos sensíveis por padrão
       defaultScope: {
         attributes: {
-          exclude: ['password', 'resetPasswordToken', 'resetPasswordExpires']
+          exclude: ['password', 'resetPasswordToken', 'resetPasswordExpires', 'apiKey']
         }
       },
       // Scope para operações que precisam da senha (login)
       scopes: {
         withPassword: {
           attributes: {} // Inclui todos os campos
+        },
+        withApiKey: {
+          attributes: {
+            exclude: ['password', 'resetPasswordToken', 'resetPasswordExpires']
+          }
         },
         withResetToken: {
           attributes: {

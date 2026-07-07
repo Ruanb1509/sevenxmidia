@@ -7,9 +7,12 @@ import useAuth from '../hooks/useAuth';
  * Redireciona para login se não estiver autenticado
  */
 const ProtectedRoute = ({ children }) => {
-    const { isAuthenticated, loading } = useAuth();
+    const { isAuthenticated, loading, token, user } = useAuth();
 
-    if (loading) {
+    // Aguarda enquanto verifica o token (loading) ou enquanto existe um
+    // token salvo mas o usuário ainda não foi carregado (evita redirect
+    // prematuro para /login no primeiro render).
+    if (loading || (token && !user)) {
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">

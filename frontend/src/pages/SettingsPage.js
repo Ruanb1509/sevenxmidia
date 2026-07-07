@@ -1,7 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { 
+import { useTheme } from "next-themes";
+import {
     Bell, Lock, Globe, Eye, Trash2, LogOut, Save, ChevronRight, Moon, Sun, Zap
 } from "lucide-react";
 import useAuth from "../hooks/useAuth";
@@ -13,14 +14,19 @@ import Header from "../components/Header";
 const SettingsPage = () => {
     const navigate = useNavigate();
     const { user, isAuthenticated, logout, loading } = useAuth();
+    const { theme, setTheme } = useTheme();
     const [settings, setSettings] = React.useState({
         emailNotifications: true,
         marketingEmails: false,
         twoFactor: false,
         publicProfile: true,
-        darkMode: false,
         dataCollection: true,
     });
+
+    // Cobranças são gerenciadas pelo Whop (processador de pagamento)
+    const openWhopOrders = () => {
+        window.open("https://whop.com/orders", "_blank", "noopener");
+    };
 
 
     const handleLogout = () => {
@@ -160,9 +166,9 @@ const SettingsPage = () => {
                                     <p className="font-medium">Dark Mode</p>
                                     <p className="text-sm text-muted-foreground">Use dark theme for the interface</p>
                                 </div>
-                                <Switch 
-                                    checked={settings.darkMode}
-                                    onCheckedChange={() => handleSettingChange('darkMode')}
+                                <Switch
+                                    checked={theme === "dark"}
+                                    onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
                                 />
                             </div>
                         </div>
@@ -175,18 +181,21 @@ const SettingsPage = () => {
                             <h2 className="text-xl font-bold">Billing & Account</h2>
                         </div>
                         <div className="space-y-3">
-                            <Button variant="outline" className="w-full justify-between">
-                                View Billing History
+                            <Button variant="outline" className="w-full justify-between" onClick={openWhopOrders}>
+                                View Billing History (Whop)
                                 <ChevronRight className="w-4 h-4" />
                             </Button>
-                            <Button variant="outline" className="w-full justify-between">
+                            <Button variant="outline" className="w-full justify-between" onClick={() => navigate("/#pricing")}>
                                 Upgrade Plan
                                 <ChevronRight className="w-4 h-4" />
                             </Button>
-                            <Button variant="outline" className="w-full justify-between">
-                                Payment Methods
+                            <Button variant="outline" className="w-full justify-between" onClick={openWhopOrders}>
+                                Payment Methods (Whop)
                                 <ChevronRight className="w-4 h-4" />
                             </Button>
+                            <p className="text-xs text-muted-foreground">
+                                Payments and receipts are managed by Whop, our checkout provider.
+                            </p>
                         </div>
                     </Card>
 

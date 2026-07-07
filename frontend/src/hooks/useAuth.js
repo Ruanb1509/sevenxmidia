@@ -1,8 +1,26 @@
 import { useState, useCallback, useEffect } from 'react';
 
+/* ============================================================== */
+/* MODO TESTE — qualquer email/senha loga com um usuário VIP fake */
+/* Mude para false (ou remova o bloco) antes de fazer deploy!     */
+/* ============================================================== */
+const MOCK_AUTH = false; // true = login fake p/ teste local
+
+const MOCK_USER = {
+    id: 'mock-user-1',
+    name: 'Test Publisher',
+    email: 'test@sevenxmedia.io',
+    isVip: true,
+    createdAt: '2025-06-01T00:00:00.000Z',
+};
+
 const useAuth = () => {
-    const [user, setUser] = useState(null);
     const [token, setToken] = useState(localStorage.getItem('authToken'));
+    // Em modo mock, inicializa o usuário de forma SÍNCRONA para que rotas
+    // protegidas não redirecionem antes do useEffect rodar.
+    const [user, setUser] = useState(
+        MOCK_AUTH && localStorage.getItem('authToken') === 'mock-token' ? MOCK_USER : null
+    );
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -17,6 +35,12 @@ const useAuth = () => {
 
     const verifyToken = useCallback(async () => {
         if (!token) return;
+
+        if (MOCK_AUTH && token === 'mock-token') {
+            setUser(MOCK_USER);
+            setError(null);
+            return;
+        }
         
         setLoading(true);
         try {
@@ -47,6 +71,15 @@ const useAuth = () => {
     const register = useCallback(async (name, email, password, confirmPassword) => {
         setLoading(true);
         setError(null);
+
+        if (MOCK_AUTH) {
+            const mockUser = { ...MOCK_USER, name: name || MOCK_USER.name, email: email || MOCK_USER.email };
+            setToken('mock-token');
+            setUser(mockUser);
+            localStorage.setItem('authToken', 'mock-token');
+            setLoading(false);
+            return { success: true, user: mockUser };
+        }
 
         try {
             const response = await fetch(`${API_URL}/auth/register`, {
@@ -81,6 +114,15 @@ const useAuth = () => {
     const login = useCallback(async (email, password) => {
         setLoading(true);
         setError(null);
+
+        if (MOCK_AUTH) {
+            const mockUser = { ...MOCK_USER, email: email || MOCK_USER.email };
+            setToken('mock-token');
+            setUser(mockUser);
+            localStorage.setItem('authToken', 'mock-token');
+            setLoading(false);
+            return { success: true, user: mockUser };
+        }
 
         try {
             const response = await fetch(`${API_URL}/auth/login`, {
